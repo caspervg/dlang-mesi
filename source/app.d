@@ -84,8 +84,3 @@ void simulateRead(int threadId, ulong address, ulong data, int size) {
         }
     }
 }
-
-ulong hexStringToNumber(string hex) {
-    writeln(hex);
-    return 0;
-}
