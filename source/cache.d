@@ -12,7 +12,7 @@ interface Cache {
     CacheBlock busRead(ulong address);
     CacheBlock busWrite(ulong address);
     void busUpgrade(ulong address);
-    void busUpdate(ulong address, CacheBlock cacheBlock);
+    //void busUpdate(ulong address, CacheBlock cacheBlock);
 }
 
 enum Location {
@@ -66,7 +66,7 @@ class DefaultCacheBlock : CacheBlock {
         tag = 0;
         state = State.INVALID;
         location = loc;
-        for (int i = 0; i < CacheBlock.size; i++) {
+        for (int i = 0; i < CacheBlock.size / 8; i++) {
             data[i] = -1;
         }
     }

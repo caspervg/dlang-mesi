@@ -43,10 +43,11 @@ class Memory {
 
     private ulong get(ulong address) {
         ulong dramIndex = getIndex(address);
-        if (!dramIndex in memory) {
+
+        const ulong* elem = (dramIndex in memory);
+        if (elem is null) {
             memory[dramIndex] = -1;
         }
-
         return memory[dramIndex];
     }
 

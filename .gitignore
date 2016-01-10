@@ -52,3 +52,4 @@ __dummy.html
 *.o
 *.obj
 dlang-mesi
+/traces

@@ -6,8 +6,13 @@ import cache, memory;
 class Bus {
 
     ulong busWrites, busReads, busUpgrades, busUpdates;
-    Cache[] caches;
+    int numCores;
+    Cache[16] caches;
     Memory memory;
+
+    this(int numCores) {
+        this.numCores = numCores;
+    }
 
     void setMemory(Memory ram) {
         this.memory = ram;
@@ -22,6 +27,8 @@ class Bus {
 
         // Try the caches
         foreach (int i, Cache c; caches) {
+            if (c is null) continue;
+
             auto block = c.busWrite(address);
             if (block !is null) {
                 return block;
@@ -38,6 +45,8 @@ class Bus {
 
         // Try the caches
         foreach (int i, Cache c; caches) {
+            if (c is null) continue;
+
             auto block = c.busRead(address);
             if (block !is null) {
                 return block;
@@ -47,5 +56,20 @@ class Bus {
         // Return from backing store
         auto block = memory.readBlock(address);
         return block;
+    }
+
+    void busUpgrade(ulong address, ubyte cacheId) {
+        busUpgrades++;
+
+        // Ask the caches
+        foreach (int i, Cache c; caches) {
+            if (c is null) continue;
+
+            c.busUpgrade(address);
+        }
+    }
+
+    void writeBack(CacheBlock cb) {
+        memory.writeBlock(cb);
     }
 }
