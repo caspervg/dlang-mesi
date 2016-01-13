@@ -50,6 +50,7 @@ void main(string[] args)
 
         if (lineNumber % 1_000_000 == 0) {
             writefln("Simulated %s million instructions ", lineNumber / 1_000_000);
+            stdout.flush();
         }
     }
 
@@ -84,6 +85,8 @@ void simulateRead(int threadId, ulong address, ulong data, int size) {
         if (errors == 100) {
             writefln("100 errors printed, switching to silent mode");
         }
+
+        stdout.flush();
     }
 }
 
