@@ -13,6 +13,8 @@ interface Cache {
     CacheBlock busWrite(ulong address);
     void busUpgrade(ulong address);
     //void busUpdate(ulong address, CacheBlock cacheBlock);
+
+    void analyze();
 }
 
 enum Location {

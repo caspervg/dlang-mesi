@@ -6,7 +6,7 @@ import std.format;
 import std.c.process;
 import memory, bus, cache, mesi;
 
-Cache[16] caches;
+Cache[int] caches;
 Memory dram;
 Bus interconnect;
 int numCores;
@@ -38,7 +38,7 @@ void main(string[] args)
 
         auto sections = line.split("\t");
         int threadId = to!int(sections[0]);
-        ulong address = to!ulong(sections[2], 16);
+        ulong address = to!ulong(sections[2], 16);  // hexadecimal to decimal
         ulong data = to!ulong(sections[3]);
         int dataSize = to!int(sections[4]);
 
@@ -52,6 +52,8 @@ void main(string[] args)
             writefln("Simulated %s million instructions ", lineNumber / 1_000_000);
         }
     }
+
+    analyze();
 }
 
 void initSimulation(int numCores, int size) {
@@ -83,4 +85,21 @@ void simulateRead(int threadId, ulong address, ulong data, int size) {
             writefln("100 errors printed, switching to silent mode");
         }
     }
+}
+
+void analyze() {
+    writeln();
+    writefln("%s errors reported out of %s instructions (%s%%)", errors, lineNumber, (errors/lineNumber));
+    writefln("---");
+    writefln("Cache statistics:");
+    for (int i = 0; i < caches.length; i++) {
+        writefln("\tCache %s:", i);
+        caches[i].analyze();
+    }
+    writefln("---");
+    writefln("Bus statistics:");
+    interconnect.analyze();
+    writefln("---");
+    writefln("DRAM statistics:");
+    dram.analyze();
 }

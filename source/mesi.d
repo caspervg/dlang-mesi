@@ -207,4 +207,10 @@ class MesiCache : Cache
             }
         }
     }
+
+    void analyze() {
+        writefln("\t\tHits: %s", hit);
+        writefln("\t\tMisses: %s", miss);
+        writefln("\t\tAccesses: %s", access);
+    }
 }

@@ -8,9 +8,6 @@ class Memory {
     ulong access, reads, writes, dataRead, dataWritten;
     ulong[ulong] memory;
 
-    //ulong read(ulong address, ubyte size) {
-    //}
-
     CacheBlock readBlock(ulong address) {
         access++;
         reads++;
@@ -26,9 +23,6 @@ class Memory {
         return cb;
     }
 
-    //void write(ulong address, ulong data, ubyte size) {
-    //}
-
     void writeBlock(CacheBlock cb) {
         access++;
         writes++;
@@ -39,6 +33,15 @@ class Memory {
             set(address, cb.getData(address, 8));
             address += 8;
         }
+    }
+
+    void analyze() {
+        writefln("\tAccesses: %s", access);
+        writefln("\tReads: %s", reads);
+        writefln("\tWritten: %s", writes);
+        writeln();
+        writefln("\tData read: %s kByte", (dataRead >> 10));
+        writefln("\tData written: %s kByte", (dataWritten >> 10));
     }
 
     private ulong get(ulong address) {

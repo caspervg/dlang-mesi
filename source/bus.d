@@ -7,7 +7,7 @@ class Bus {
 
     ulong busWrites, busReads, busUpgrades, busUpdates;
     int numCores;
-    Cache[16] caches;
+    Cache[int] caches;
     Memory memory;
 
     this(int numCores) {
@@ -27,8 +27,6 @@ class Bus {
 
         // Try the caches
         foreach (int i, Cache c; caches) {
-            if (c is null) continue;
-
             auto block = c.busWrite(address);
             if (block !is null) {
                 return block;
@@ -45,8 +43,6 @@ class Bus {
 
         // Try the caches
         foreach (int i, Cache c; caches) {
-            if (c is null) continue;
-
             auto block = c.busRead(address);
             if (block !is null) {
                 return block;
@@ -63,13 +59,17 @@ class Bus {
 
         // Ask the caches
         foreach (int i, Cache c; caches) {
-            if (c is null) continue;
-
             c.busUpgrade(address);
         }
     }
 
     void writeBack(CacheBlock cb) {
         memory.writeBlock(cb);
+    }
+
+    void analyze() {
+        writefln("\tbusReads: %s", busReads);
+        writefln("\tbusWrites: %s", busWrites);
+        writefln("\tbusUpgrades: %s", busUpgrades);
     }
 }
